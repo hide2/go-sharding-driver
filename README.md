@@ -70,4 +70,12 @@ db.Exec("abcde", "INSERT INTO user_keys(user_key, uid) VALUES(?, ?)", "abcde", 1
 # DB接口-MultiShards
 users := Users{}
 db.MultiQuery("SELECT * FROM users WHERE level > 100 limit 10").Scan(&users)
+
+# 测试
+go run cmd/app/server.go
+curl -X POST -H "Content-Type: application/json" -d '{"uid": 1111, "name": "Andy"}' -v http://localhost:8080/sharding/users
+curl -X POST -H "Content-Type: application/json" -d '{"uid": 2222, "name": "Calvin"}' -v http://localhost:8080/sharding/users
+curl -v http://localhost:8080/sharding/users/1111
+curl -v http://localhost:8080/sharding/users/2222
+
 ```

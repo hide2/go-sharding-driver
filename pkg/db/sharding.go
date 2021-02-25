@@ -55,3 +55,28 @@ func initShardingDB(env string, write string, read string) *gorm.DB {
 		SetMaxOpenConns(200))
 	return db
 }
+
+type ShardingDBStruct struct {
+}
+
+func (db *ShardingDBStruct) Query(shardingKey interface{}, sql string, values ...interface{}) *gorm.DB {
+	// todo
+	// return ShardingDBs["s"].Raw(sql, values)
+	return nil
+}
+
+func (db *ShardingDBStruct) Exec(shardingKey interface{}, sql string, values ...interface{}) {
+	// todo
+	// switch t := shardingKey.(type) {
+	// case int:
+	// 	alliance_id = int64(t)
+	// case int64:
+	// 	alliance_id = t
+	// default:
+	// 	alliance_id = 0
+	// }
+	// ds = "ds_" +
+	// ShardingDBs["s"].Exec(sql, values)
+}
+
+var ShardingDB = ShardingDBStruct{}

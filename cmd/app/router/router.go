@@ -33,4 +33,7 @@ func Register(engine *gin.Engine) {
 		}
 	}
 
+	engine.POST("/sharding/users", new(handler.ShardingUserHandler).CreateUser)
+	engine.GET("/sharding/users/:id", new(handler.ShardingUserHandler).GetUser)
+
 }
