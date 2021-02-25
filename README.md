@@ -12,38 +12,42 @@
 ## Config
 ```
 {
-    "sharding_datasources": {
-		"ds_0": {
-    	    "write": "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local",
-	        "read": "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
-		},
-		"ds_1": {
-    	    "write": "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local",
-	        "read": "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
-		},
-		"ds_2": {
-    	    "write": "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local",
-	        "read": "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
-		},
-		"ds_3": {
-    	    "write": "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local",
-	        "read": "root:root@tcp(127.0.0.1:3306)/test?charset=utf8mb4&parseTime=True&loc=Local"
-		},
-    },
+    "sharding_datasources": [
+        {
+            "name": "ds_0",
+            "write": "root:root@tcp(127.0.0.1:3306)/test_0?charset=utf8mb4&parseTime=True&loc=Local",
+            "read": "root:root@tcp(127.0.0.1:3306)/test_0?charset=utf8mb4&parseTime=True&loc=Local"
+        },
+        {
+            "name": "ds_1",
+            "write": "root:root@tcp(127.0.0.1:3306)/test_1?charset=utf8mb4&parseTime=True&loc=Local",
+            "read": "root:root@tcp(127.0.0.1:3306)/test_1?charset=utf8mb4&parseTime=True&loc=Local"
+        },
+        {
+            "name": "ds_2",
+            "write": "root:root@tcp(127.0.0.1:3306)/test_2?charset=utf8mb4&parseTime=True&loc=Local",
+            "read": "root:root@tcp(127.0.0.1:3306)/test_2?charset=utf8mb4&parseTime=True&loc=Local"
+        },
+        {
+            "name": "ds_3",
+            "write": "root:root@tcp(127.0.0.1:3306)/test_3?charset=utf8mb4&parseTime=True&loc=Local",
+            "read": "root:root@tcp(127.0.0.1:3306)/test_3?charset=utf8mb4&parseTime=True&loc=Local"
+        },
+    ],
     "sharding_tables": {
-		"users": {
-			"ddl": "sql/sharding/user.sql",
-			"sharding_key": "uid",
-			"sharding_ds_num": 4,
-			"sharding_table_num": 256
-		},
-		"user_keys": {
-			"ddl": "sql/sharding/user_keys.sql",
-			"sharding_key": "key",
-			"sharding_ds_num": 8,
-			"sharding_table_num": 256
-		},
-	}
+        "users": {
+            "ddl": "sql/sharding/users.sql",
+            "sharding_key": "uid",
+            "sharding_ds_num": 4,
+            "sharding_table_num": 256
+        },
+        "user_keys": {
+            "ddl": "sql/sharding/user_keys.sql",
+            "sharding_key": "user_key",
+            "sharding_ds_num": 8,
+            "sharding_table_num": 256
+        },
+    }
 }
 ```
 
@@ -61,7 +65,7 @@
 user := User{}
 db.Query(1001, "SELECT * FROM users WHERE uid = ?", 1001).Scan(&user)
 db.Exec(1001, "UPDATE users SET lang = ? WHERE uid = ?", "en", 1001)
-db.Exec("abcde", "INSERT INTO user_keys(key, uid) VALUES(?, ?)", "abcde", 1001)
+db.Exec("abcde", "INSERT INTO user_keys(user_key, uid) VALUES(?, ?)", "abcde", 1001)
 
 # DB接口-MultiShards
 users := Users{}
