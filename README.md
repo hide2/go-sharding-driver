@@ -33,13 +33,13 @@
     "sharding_tables": {
 		"users": {
 			"ddl": "sql/sharding/user.sql",
-			"sharding_key": "fpid",
+			"sharding_key": "uid",
 			"sharding_ds_num": 4,
 			"sharding_table_num": 256
 		},
-		"user_bind_keys": {
-			"ddl": "sql/sharding/user_bind_keys.sql",
-			"sharding_key": "bind_key",
+		"user_keys": {
+			"ddl": "sql/sharding/user_keys.sql",
+			"sharding_key": "key",
 			"sharding_ds_num": 8,
 			"sharding_table_num": 256
 		},
@@ -59,9 +59,9 @@
 
 # DB接口-单Shard
 user := User{}
-db.Query(1001, "SELECT * FROM users WHERE fpid = ?", 1001).Scan(&user)
-db.Exec(1001, "UPDATE users SET lang = ? WHERE fpid = ?", "en", 1001)
-db.Exec("abcde", "INSERT INTO user_bind_keys(bind_key, fpid) VALUES(?, ?)", "abcde", 1001)
+db.Query(1001, "SELECT * FROM users WHERE uid = ?", 1001).Scan(&user)
+db.Exec(1001, "UPDATE users SET lang = ? WHERE uid = ?", "en", 1001)
+db.Exec("abcde", "INSERT INTO user_keys(key, uid) VALUES(?, ?)", "abcde", 1001)
 
 # DB接口-MultiShards
 users := Users{}
